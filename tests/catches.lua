@@ -276,7 +276,10 @@ do
         grants[#grants + 1] = { src = src, item = item, amount = amount }
         return true
     end }
-    env.print = function(message) messages[#messages + 1] = message end
+    env.Kora.logging = { error = function(event, message, fields)
+        messages[#messages + 1] = { event = event, error = fields and fields.error }
+        return true
+    end }
     env.exports.kora_skills.getRep = function(_, src, skill)
         assert(src == env.source and skill == 'fishing')
         skillReads = skillReads + 1
@@ -368,6 +371,6 @@ do
     funds, refundOK = 500, false
     assert(purchase(1, 1, 1) == nil)
     assert(funds == 400 and #refunds == 3 and #messages == 1
-        and messages[1]:find('refund unavailable', 1, true), 'rejected refund must be reported')
+        and messages[1].event == 'shop.refund_failed' and messages[1].error:find('refund unavailable', 1, true), 'rejected refund must be reported')
 end
 print('kora_fishing: catch authority, timing, proof binding, replay, inventory, client lifecycle and shop eligibility regression passed')

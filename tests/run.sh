@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+lua tests/logging.lua
 lua tests/catches.lua "${1:-client/fishing.lua}"
 lua tests/breakdown.lua

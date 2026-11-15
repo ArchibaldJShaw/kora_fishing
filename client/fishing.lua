@@ -48,7 +48,7 @@ local function fish()
         local proof = played and type(result) == 'table' and result.success and result.proof or nil
         TriggerServerEvent('kora_fishing:server:catchFish', currentZone, proof, begun.authorization)
         if not played then
-            print(('kora_fishing: fishing minigame failed: %s'):format(result))
+            Kora.logging.error('fishing.minigame_failed', 'Fishing minigame failed', { error = tostring(result) })
             Kora.notify.send({ title = Kora.lang('Fishing.title'), message = Kora.lang('Fishing.unable_complete'), type = 'error' })
             break
         end
@@ -97,7 +97,7 @@ RegisterNetEvent('kora_fishing:client:stopFishing', function()
             Wait(0)
         end
         if not NetworkHasControlOfEntity(entity) then
-            print('Failed to gain network control of rod entity, cannot delete')
+            Kora.logging.warn('fishing.rod_control_unavailable', 'Failed to gain network control of rod entity, cannot delete')
             return
         end
     end
