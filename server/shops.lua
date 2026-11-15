@@ -28,6 +28,6 @@ RegisterNetEvent('kora_fishing:server:purchaseItem', function(shopKey, itemKey, 
     if exports.kora_inventory:addItem(src, item, amount) then return end
     local refunded, refundError = exports.kora_core:addMoney(src, 'cash', totalPrice, 'kora_fishing-purchase-refund', true)
     if not refunded then
-        print(('kora_fishing: purchase refund failed for player %s: %s'):format(src, tostring(refundError)))
+        Kora.logging.error('shop.refund_failed', 'Purchase refund failed', { playerId = src, error = tostring(refundError) })
     end
 end)
